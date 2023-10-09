@@ -1,0 +1,39 @@
+#!/bin/bash
+
+CONFIG=/etc/sing-box/config.json
+SERVER="{{SERVER}}"
+
+METHOD=$(jq -r ".inbounds[].method" $CONFIG)
+SERVER_KEY=$(jq -r ".inbounds[].password" $CONFIG)
+PORT=$(jq -r ".inbounds[].listen_port" $CONFIG)
+COUNT=$(jq -r ".inbounds[].users | length" $CONFIG)
+
+if grep -q users $CONFIG; then
+    for ((x = 0 ; x < $COUNT ; x++ ));
+    do
+        CLIENT_NAME=$(jq -r ".inbounds[].users[$x].name" $CONFIG)
+        CLIENT_KEY=$(jq -r ".inbounds[].users[$x].password" $CONFIG)
+        BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY:$CLIENT_KEY)
+        printf '%b\n' "\033[1m"$CLIENT_NAME"\033[0m"
+        printf "Clipboard string: ss://$BASE64@$SERVER:$PORT#$CLIENT_NAME\n\n"
+        printf "Manual config:\n"
+        printf "  Adress: $SERVER\n"
+        printf "  Port: $PORT\n"
+        printf "  Password: $SERVER_KEY:$CLIENT_KEY\n"
+        printf "  Method\Security: $METHOD\n\n"
+        echo "QRCode:"
+        echo "ss://$BASE64@$SERVER:$PORT#$CLIENT_NAME" | qrencode -t utf8
+        echo -e "\n"
+    done
+else
+        BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY)
+        printf "Clipboard string: ss://$BASE64@$SERVER:$PORT#MySS\n\n"
+        printf "Manual config:\n"
+        printf "  Adress: $SERVER\n"
+        printf "  Port: $PORT\n"
+        printf "  Password: $SERVER_KEY\n"
+        printf "  Method\Security: $METHOD\n\n"
+        echo "QRCode:"
+        echo "ss://$BASE64@$SERVER:$PORT#MySS" | qrencode -t utf8
+        echo -e "\n"
+fi

@@ -1,0 +1,12 @@
+{
+    "inbounds": [
+      {
+        "type": "shadowsocks",
+        "listen": "::",
+        "listen_port": {{PORT}},
+        "network": "tcp",
+        "method": "{{METHOD}}",
+        "password": "{{PASS}}"
+      }
+    ]
+}

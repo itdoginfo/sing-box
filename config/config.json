@@ -1,0 +1,22 @@
+{
+    "inbounds": [
+      {
+        "type": "shadowsocks",
+        "listen": "::",
+        "listen_port": 443,
+        "network": "tcp",
+        "method": "2022-blake3-aes-128-gcm",
+        "password": "mainpass",
+        "users": [
+            {
+              "name": "user1",
+              "password": "userpass"
+            },
+            {
+              "name": "user2",
+              "password": "userpass"
+            }   
+        ] 
+      }
+    ]
+}

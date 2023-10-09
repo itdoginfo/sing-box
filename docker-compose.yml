@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  sing-box:
+    container_name: sing-box
+    image: itdoginfo/sing-box:v1.5.2
+    ports:
+      - "443:443"
+    environment:
+      PASS: "pass"
+      SERVER: domain\ip
+    restart: always
+    # Enable for custom config (multiple accounts for example)
+    # volumes:
+    #  - ./config:/etc/sing-box/
