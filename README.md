@@ -27,6 +27,11 @@ docker run itdoginfo/sing-box:v1.5.2 gen
 docker compose up -d
 ```
 
+Доступные env переменные:
+- [METHOD](https://sing-box.sagernet.org/configuration/outbound/shadowsocks/#method)
+- PASS
+- PORT
+
 ## Настройка клиентов
 Получить данные для настройки устройств
 ```

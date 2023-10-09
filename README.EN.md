@@ -23,6 +23,10 @@ Container up
 ```
 docker compose up -d
 ```
+Available environment variables:
+- [METHOD](https://sing-box.sagernet.org/configuration/outbound/shadowsocks/#method)
+- PASS
+- PORT
 
 ## Configure clients
 Get configs for clients devices
