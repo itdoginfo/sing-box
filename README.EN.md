@@ -41,6 +41,11 @@ In docker-compose.yml uncomment
     #  - ./config:/etc/sing-box/
 ```
 
+Download template config
+```
+mkdir config && cd config && wget https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
+```
+
 Generate mainpass and passwords for users
 ```
 docker run itdoginfo/sing-box:v1.5.2 gen
@@ -48,4 +53,9 @@ docker run itdoginfo/sing-box:v1.5.2 gen
 
 Specify this passwords in `config/config.json`. You can use any name you want. They will be displayed on the device when you add them
 
-With the container up, you have to down\up
+With the container without volume up, you have to down\up.
+
+Adding/removing users requires restarting the sing-box
+```
+docker restart sing-box
+```

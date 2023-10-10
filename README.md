@@ -45,6 +45,11 @@ docker exec sing-box show
     #  - ./config:/etc/sing-box/
 ```
 
+Скачать темплейт конфига
+```
+mkdir config && cd config && wget https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
+```
+
 Сгенерировать mainpass и пароли для юзеров
 ```
 docker run itdoginfo/sing-box:v1.5.2 gen
@@ -52,4 +57,9 @@ docker run itdoginfo/sing-box:v1.5.2 gen
 
 Проставить их в `config/config.json`. Имена для юзеров любые, они будут отображаться при добавлении конфига на устройство.
 
-При уже поднятом контейнере требуется down\up
+При уже поднятом контейнере без volume требуется down\up.
+
+При добавлении\удалении пользователей требуется рестарт sing-box
+```
+docker restart sing-box
+```
