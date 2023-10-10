@@ -43,7 +43,7 @@ In docker-compose.yml uncomment
 
 Download template config
 ```
-mkdir config && cd config && wget https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
+mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
 ```
 
 Generate mainpass and passwords for users

@@ -47,7 +47,7 @@ docker exec sing-box show
 
 Скачать темплейт конфига
 ```
-mkdir config && cd config && wget https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
+mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
 ```
 
 Сгенерировать mainpass и пароли для юзеров
