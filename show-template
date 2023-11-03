@@ -1,39 +1,71 @@
 #!/bin/bash
 
+# Main
 CONFIG=/etc/sing-box/config.json
 SERVER="{{SERVER}}"
+PROTOCOL=$(jq -r ".inbounds[].type" $CONFIG)
 
-METHOD=$(jq -r ".inbounds[].method" $CONFIG)
-SERVER_KEY=$(jq -r ".inbounds[].password" $CONFIG)
-PORT=$(jq -r ".inbounds[].listen_port" $CONFIG)
-COUNT=$(jq -r ".inbounds[].users | length" $CONFIG)
+# Shadowsocks
+METHOD=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .method' $CONFIG)
+SERVER_KEY=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .password' $CONFIG)
+PORT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .listen_port' $CONFIG)
+COUNT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .users | length' $CONFIG)
 
-if grep -q users $CONFIG; then
-    for ((x = 0 ; x < $COUNT ; x++ ));
-    do
-        CLIENT_NAME=$(jq -r ".inbounds[].users[$x].name" $CONFIG)
-        CLIENT_KEY=$(jq -r ".inbounds[].users[$x].password" $CONFIG)
-        BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY:$CLIENT_KEY)
-        printf '%b\n' "\033[1m"$CLIENT_NAME"\033[0m"
-        printf "Clipboard string: ss://$BASE64@$SERVER:$PORT#$CLIENT_NAME\n\n"
-        printf "Manual config:\n"
-        printf "  Adress: $SERVER\n"
-        printf "  Port: $PORT\n"
-        printf "  Password: $SERVER_KEY:$CLIENT_KEY\n"
-        printf "  Method\Security: $METHOD\n\n"
-        echo "QRCode:"
-        echo "ss://$BASE64@$SERVER:$PORT#$CLIENT_NAME" | qrencode -t utf8
-        echo -e "\n"
-    done
-else
-        BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY)
-        printf "Clipboard string: ss://$BASE64@$SERVER:$PORT#MySS\n\n"
-        printf "Manual config:\n"
-        printf "  Adress: $SERVER\n"
-        printf "  Port: $PORT\n"
-        printf "  Password: $SERVER_KEY\n"
-        printf "  Method\Security: $METHOD\n\n"
-        echo "QRCode:"
-        echo "ss://$BASE64@$SERVER:$PORT#MySS" | qrencode -t utf8
-        echo -e "\n"
-fi
+# VLESS
+PUBLIC_KEY="{{PUBLIC_KEY}}"
+PORT_VLESS=$(jq -r '.inbounds[] | select(.type=="vless") | .listen_port' $CONFIG)
+SNI=$(jq -r '.inbounds[] | select(.type=="vless") | .tls.reality.handshake.server' $CONFIG)
+SID=$(jq -r '.inbounds[] | select(.type=="vless") | .tls.reality.short_id[]' $CONFIG)
+COUNT_VLESS=$(jq -r '.inbounds[] | select(.type=="vless") | .users | length' $CONFIG)
+
+readarray -t array < <(printf '%s' "$PROTOCOL")
+for i in "${array[@]}"; do
+    if [ "$i" == shadowsocks ]; then
+        if grep -q users $CONFIG; then
+            for ((x = 0 ; x < $COUNT_SHADOWSOCKS ; x++ )); do
+                CLIENT_NAME=$(jq -r ".inbounds[] | select(.type==\"shadowsocks\") | .users[$x].name" $CONFIG)
+                CLIENT_KEY=$(jq -r ".inbounds[] | select(.type==\"shadowsocks\") | .users[$x].password" $CONFIG)
+                BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY:$CLIENT_KEY)
+                printf "\033[1m"%s"\033[0m\n" "$CLIENT_NAME Shadowsocks2022"
+                printf "Clipboard string: ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#$CLIENT_NAME\n\n"
+                printf "Manual config:\n"
+                printf "  Adress: $SERVER\n"
+                printf "  Port: $PORT_SHADOWSOCKS\n"
+                printf "  Password: $SERVER_KEY:$CLIENT_KEY\n"
+                printf "  Method\Security: $METHOD\n\n"
+                echo "QRCode:"
+                echo "ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#$CLIENT_NAME" | qrencode -t utf8
+                echo -e "\n"
+            done
+        else
+                BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY)
+                printf "Clipboard string: ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#MySS\n\n"
+                printf "Manual config:\n"
+                printf "  Adress: $SERVER\n"
+                printf "  Port: $PORT_SHADOWSOCKS\n"
+                printf "  Password: $SERVER_KEY\n"
+                printf "  Method\Security: $METHOD\n\n"
+                echo "QRCode:"
+                echo "ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#MySS" | qrencode -t utf8
+                echo -e "\n"
+        fi
+    elif [ "$i" == vless ]; then
+        for ((x = 0 ; x < $COUNT_VLESS ; x++ )); do
+            CLIENT_UUID=$(jq -r ".inbounds[] | select(.type==\"vless\") | .users[$x].uuid" $CONFIG)
+            CLIENT_NAME=$(jq -jr ".inbounds[] | select(.type==\"vless\") | .users[$x].name" $CONFIG)
+            printf "\033[1m"%s"\033[0m\n" "$CLIENT_NAME VLESS"
+            printf "Clipboard string: vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME\n\n"
+            printf "Manual config:\n"
+            printf "  Adress: $SERVER\n"
+            printf "  Port: $PORT_VLESS\n"
+            printf "  UUID: $CLIENT_UUID\n"
+            printf "  Reality: true, flow: xtls-rprx-vision\n"
+            printf "  Fake server (SNI, Server name): $SNI\n"
+            printf "  Public key: $PUBLIC_KEY\n"
+            printf "  Short ID: $SID\n\n"
+            echo "QRCode:"
+            echo "vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME" | qrencode -t utf8
+            echo -e "\n"
+        done
+    fi
+done

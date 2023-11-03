@@ -1,0 +1,32 @@
+{
+  "inbounds": [
+    {
+      "type": "vless",
+      "listen": "::",
+      "listen_port": {{PORT}},
+      "users": [
+        {
+          "name": "user",
+          "uuid": "{{UUID}}",
+          "flow": "xtls-rprx-vision"
+        }
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "{{FAKE_SERVER}}",
+        "reality": {
+          "enabled": true,
+          "handshake": {
+            "server": "{{FAKE_SERVER}}",
+            "server_port": 443
+           },
+           "private_key": "{{PRIVATE_KEY}}",
+           "short_id": [
+              "{{SHORD_ID}}"
+           ],
+           "max_time_difference": "5m"
+        }
+      }
+    }
+  ]
+}
