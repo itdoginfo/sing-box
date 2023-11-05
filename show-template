@@ -54,7 +54,7 @@ for i in "${array[@]}"; do
             CLIENT_UUID=$(jq -r ".inbounds[] | select(.type==\"vless\") | .users[$x].uuid" $CONFIG)
             CLIENT_NAME=$(jq -jr ".inbounds[] | select(.type==\"vless\") | .users[$x].name" $CONFIG)
             printf "\033[1m"%s"\033[0m\n" "$CLIENT_NAME VLESS"
-            printf "Clipboard string: vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME\n\n"
+            printf "Clipboard string: vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&fp=chrome&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME\n\n"
             printf "Manual config:\n"
             printf "  Adress: $SERVER\n"
             printf "  Port: $PORT_VLESS\n"
@@ -64,7 +64,7 @@ for i in "${array[@]}"; do
             printf "  Public key: $PUBLIC_KEY\n"
             printf "  Short ID: $SID\n\n"
             echo "QRCode:"
-            echo "vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME" | qrencode -t utf8
+            echo "vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&fp=chrome&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME" | qrencode -t utf8
             echo -e "\n"
         done
     fi
