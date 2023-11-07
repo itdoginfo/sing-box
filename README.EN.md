@@ -1,3 +1,9 @@
+[![Docker Hub](https://img.shields.io/badge/%20-DockerHub-blue?logo=docker)](https://hub.docker.com/r/itdoginfo/sing-box)
+![Docker Pulls](https://img.shields.io/docker/pulls/itdoginfo/sing-box)
+
+[![Docker Hub](https://img.shields.io/badge/%20-GitHub-black?logo=github)](https://github.com/itdoginfo/sing-box)
+![GitHub Repo stars](https://img.shields.io/github/stars/itdoginfo/sing-box)
+
 Docker image for shadowsocks2022 and VLESS proxy server
 
 ## Install
