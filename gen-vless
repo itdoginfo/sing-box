@@ -1,4 +1,4 @@
-echo "UIID:"
+echo "UUID:"
 sing-box generate uuid
 echo "PRIVATE_KEY & PUBLIC_KEY:"
 sing-box generate reality-keypair
