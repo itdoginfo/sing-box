@@ -7,6 +7,7 @@ services:
     ports:
       - "443:443"
     environment:
+      PROTOCOL: shadowsocks
       PASS: "pass"
       SERVER: domain\ip
     restart: always
