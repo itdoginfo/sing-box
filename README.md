@@ -41,6 +41,7 @@ docker compose up -d
 - PASS (обязательная)
 - [METHOD](https://sing-box.sagernet.org/configuration/outbound/shadowsocks/#method)
 - PORT
+- NAME (config name)
 
 ### VLESS
 Сгенерировать UIID, Private и public keys, Short ID
@@ -78,6 +79,7 @@ docker compose up -d
 - SHORD_ID
 - FAKE_SERVER
 - PORT
+- NAME (config name)
 
 ## Настройка клиентов
 Получить данные для настройки устройств

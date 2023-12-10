@@ -6,7 +6,7 @@
       "listen_port": {{PORT}},
       "users": [
         {
-          "name": "user",
+          "name": "{{NAME}}",
           "uuid": "{{UUID}}",
           "flow": "xtls-rprx-vision"
         }

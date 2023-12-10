@@ -38,6 +38,7 @@ Available environment variables:
 - PASS (required)
 - [METHOD](https://sing-box.sagernet.org/configuration/outbound/shadowsocks/#method)
 - PORT
+- NAME
 
 ### VLESS
 Generate UIID, Private and public keys, Short ID
@@ -75,6 +76,7 @@ Available environment variables:
 - SHORD_ID
 - FAKE_SERVER
 - PORT
+- NAME (config name)
 
 ## Configure clients
 Get configs for clients devices

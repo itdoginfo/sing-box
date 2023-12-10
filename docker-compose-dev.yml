@@ -7,13 +7,14 @@ services:
     build:
       context: .
       args:
-        RELEASE: v1.6.0
+        RELEASE: v1.7.4
     ports:
       - "443:443"
     environment:
       PROTOCOL: proto
       PASS: "pass"
       SERVER: domain\ip
+      NAME: test
     restart: always
     # Enable for custom config (multiple accounts for example)
     # volumes:

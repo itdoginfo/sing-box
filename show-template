@@ -4,6 +4,7 @@
 CONFIG=/etc/sing-box/config.json
 SERVER="{{SERVER}}"
 PROTOCOL=$(jq -r ".inbounds[].type" $CONFIG)
+NAME="{{NAME}}"
 
 # Shadowsocks
 METHOD=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .method' $CONFIG)
@@ -39,14 +40,14 @@ for i in "${array[@]}"; do
             done
         else
                 BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY)
-                printf "Clipboard string: ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#MySS\n\n"
+                printf "Clipboard string: ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#$NAME\n\n"
                 printf "Manual config:\n"
                 printf "  Adress: $SERVER\n"
                 printf "  Port: $PORT_SHADOWSOCKS\n"
                 printf "  Password: $SERVER_KEY\n"
                 printf "  Method\Security: $METHOD\n\n"
                 echo "QRCode:"
-                echo "ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#MySS" | qrencode -t utf8
+                echo "ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#$NAME" | qrencode -t utf8
                 echo -e "\n"
         fi
     elif [ "$i" == vless ]; then
