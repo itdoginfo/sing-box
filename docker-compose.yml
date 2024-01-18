@@ -3,7 +3,7 @@ version: '3.8'
 services:
   sing-box:
     container_name: sing-box
-    image: itdoginfo/sing-box:v1.7.4
+    image: itdoginfo/sing-box:v1.8.2
     ports:
       - "443:443"
     environment:
