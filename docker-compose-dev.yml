@@ -7,7 +7,7 @@ services:
     build:
       context: .
       args:
-        RELEASE: v1.8.2
+        RELEASE: v1.8.5
     ports:
       - "443:443"
     environment:

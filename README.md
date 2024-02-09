@@ -16,7 +16,7 @@ mkdir sing-box && cd sing-box && wget https://raw.githubusercontent.com/itdoginf
 ### Shadowsocks2022
 Сгенерировать пароль
 ```
-docker run itdoginfo/sing-box:v1.8.2 gen-ss
+docker run itdoginfo/sing-box:v1.8.5 gen-ss
 ```
 
 Вставить полученный пароль в environment PASS.
@@ -46,7 +46,7 @@ docker compose up -d
 ### VLESS
 Сгенерировать UIID, Private и public keys, Short ID
 ```
-docker run itdoginfo/sing-box:v1.8.2 gen-vless
+docker run itdoginfo/sing-box:v1.8.5 gen-vless
 ```
 
 Вставить полученные значения в environment.
@@ -101,7 +101,7 @@ mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itd
 
 Сгенерировать mainpass и пароли для юзеров
 ```
-docker run itdoginfo/sing-box:v1.8.2 gen-ss
+docker run itdoginfo/sing-box:v1.8.5 gen-ss
 ```
 
 Проставить их в `config/config.json`. Имена для юзеров любые, они будут отображаться при добавлении конфига на устройство.
