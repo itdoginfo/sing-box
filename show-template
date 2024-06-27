@@ -7,10 +7,10 @@ PROTOCOL=$(jq -r ".inbounds[].type" $CONFIG)
 NAME="{{NAME}}"
 
 # Shadowsocks
-METHOD=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .method' $CONFIG)
-SERVER_KEY=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .password' $CONFIG)
-PORT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .listen_port' $CONFIG)
-COUNT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.type=="shadowsocks") | .users | length' $CONFIG)
+METHOD=$(jq -r '.inbounds[] | select(.method | index("2022-")) | .method' $CONFIG)
+SERVER_KEY=$(jq -r '.inbounds[] | select(.method | index("2022-")) | .password' $CONFIG)
+PORT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.method | index("2022-")) | .listen_port' $CONFIG)
+COUNT_SHADOWSOCKS=$(jq -r '.inbounds[] | select(.method | index("2022-")) | .users | length' $CONFIG)
 
 # VLESS
 PUBLIC_KEY="{{PUBLIC_KEY}}"
@@ -24,8 +24,8 @@ for i in "${array[@]}"; do
     if [ "$i" == shadowsocks ]; then
         if grep -q users $CONFIG; then
             for ((x = 0 ; x < $COUNT_SHADOWSOCKS ; x++ )); do
-                CLIENT_NAME=$(jq -r ".inbounds[] | select(.type==\"shadowsocks\") | .users[$x].name" $CONFIG)
-                CLIENT_KEY=$(jq -r ".inbounds[] | select(.type==\"shadowsocks\") | .users[$x].password" $CONFIG)
+                CLIENT_NAME=$(jq -r ".inbounds[] | select(.method | index(\"2022-\")) | .users[$x].name" $CONFIG)
+                CLIENT_KEY=$(jq -r ".inbounds[] | select(.method | index(\"2022-\")) | .users[$x].password" $CONFIG)
                 BASE64=$(base64 -w 0 <<< $METHOD:$SERVER_KEY:$CLIENT_KEY)
                 printf "\033[1m"%s"\033[0m\n" "$CLIENT_NAME Shadowsocks2022"
                 printf "Clipboard string: ss://$BASE64@$SERVER:$PORT_SHADOWSOCKS#$CLIENT_NAME\n\n"
