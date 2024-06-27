@@ -1,7 +1,7 @@
 ARG RELEASE
 FROM ghcr.io/sagernet/sing-box:${RELEASE} AS sing-box
 
-FROM alpine:3.18.4
+FROM alpine:3.18.7
 
 RUN apk add --no-cache libqrencode jq coreutils bash && mkdir -p /etc/sing-box/
 
