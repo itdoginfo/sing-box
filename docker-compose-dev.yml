@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   sing-box:
     container_name: sing-box
@@ -7,15 +5,11 @@ services:
     build:
       context: .
       args:
-        RELEASE: v1.8.5
+        RELEASE: v1.9.3
     ports:
       - "443:443"
     environment:
-      PROTOCOL: proto
-      PASS: "pass"
-      SERVER: domain\ip
-      NAME: test
-    restart: always
-    # Enable for custom config (multiple accounts for example)
-    # volumes:
-    #  - ./config:/etc/sing-box/
+      SERVER: test.com
+      PUBLIC_KEY: yieryEYXzNejHPUqY7UnIHLKQOGvxAHfGkjsvTihO3w
+    volumes:
+     - ./config:/etc/sing-box/
