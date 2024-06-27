@@ -1,22 +1,55 @@
 {
-    "inbounds": [
-      {
-        "type": "shadowsocks",
-        "listen": "::",
-        "listen_port": 443,
-        "network": "tcp",
-        "method": "2022-blake3-aes-128-gcm",
-        "password": "mainpass",
-        "users": [
-            {
-              "name": "user1",
-              "password": "userpass"
+  "inbounds": [
+    {
+      "type": "shadowsocks",
+      "listen": "::",
+      "listen_port": 80,
+      "network": "tcp",
+      "method": "2022-blake3-aes-128-gcm",
+      "password": "bqiVe2GIty1zNj0k6qvQiQ==",
+      "users": [
+        {
+          "name": "user1",
+          "password": "eNFPKAnNMSZnPnNetIqh+Q=="
+        },
+        {
+          "name": "user2",
+          "password": "DO/NgDIj7JOM0M/uKOuz1A=="
+        }                 
+      ]
+    },
+    {
+      "type": "vless",
+      "listen": "::",
+      "listen_port": 443,
+      "users": [
+        {
+          "name": "user1",
+          "uuid": "c2794de3-9d00-4408-bb39-c95cbf46caaa",
+          "flow": "xtls-rprx-vision"
+        },
+        {
+          "name": "user2",
+          "uuid": "96941b6d-c965-465a-a2f4-0f6b1e3c2657",
+          "flow": "xtls-rprx-vision"
+        }       
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "www.microsoft.com",
+        "reality": {
+          "enabled": true,
+          "handshake": {
+            "server": "www.microsoft.com",
+            "server_port": 443
             },
-            {
-              "name": "user2",
-              "password": "userpass"
-            }   
-        ] 
+            "private_key": "qBYva0paWKZbFCQrrg2wEAX7YK2x-PVuG53rP_4ZvGs",
+            "short_id": [
+              "5aa712c1b90e36a9"
+            ],
+            "max_time_difference": "5m"
+        }
       }
-    ]
+    }
+  ]
 }

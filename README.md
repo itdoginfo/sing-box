@@ -16,7 +16,7 @@ mkdir sing-box && cd sing-box && wget https://raw.githubusercontent.com/itdoginf
 ### Shadowsocks2022
 Сгенерировать пароль
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-ss
+docker run itdoginfo/sing-box:v1.9.3 gen-ss
 ```
 
 Вставить полученный пароль в environment PASS.
@@ -46,7 +46,7 @@ docker compose up -d
 ### VLESS
 Сгенерировать UIID, Private и public keys, Short ID
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-vless
+docker run itdoginfo/sing-box:v1.9.3 gen-vless
 ```
 
 Вставить полученные значения в environment.
@@ -62,7 +62,7 @@ docker run itdoginfo/sing-box:v1.8.5 gen-vless
       UUID: 71c48bba-6b5d-484d-83ef-b047ab96f1a3
       PRIVATE_KEY: KCaRO6tGf6dLXH21HOJkPaKYQAG64WdR4JVHx41TLnc
       PUBLIC_KEY: 3h_XmVpREusSRsLo8ii3GtIpGZf-2cP5iBrQ7uzVm2Q
-      SHORD_ID: b627ec56b4f8ff40
+      SHORT_ID: b627ec56b4f8ff40
       FAKE_SERVER: www.youtube.com
 ```
 
@@ -76,7 +76,7 @@ docker compose up -d
 - UUID (обязательная)
 - PRIVATE_KEY (обязательная)
 - PUBLIC_KEY (обязательная)
-- SHORD_ID
+- SHORT_ID
 - FAKE_SERVER
 - PORT
 - NAME (config name)
@@ -87,7 +87,7 @@ docker compose up -d
 docker exec sing-box show
 ```
 
-# Работа с несколькими аккаунтами в Shadowsocks2022
+# Работа с несколькими аккаунтами
 В docker-compose.yml раскоментировать
 ```
     # volumes:
@@ -99,9 +99,13 @@ docker exec sing-box show
 mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
 ```
 
+При своём конфиге в docker-compose нужны только переменные SERVER(SS2022, VLESS) и PUBLIC_KEY(VLESS).
+
+## Shadowsocks2022
+
 Сгенерировать mainpass и пароли для юзеров
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-ss
+docker run itdoginfo/sing-box:v1.9.3 gen-ss
 ```
 
 Проставить их в `config/config.json`. Имена для юзеров любые, они будут отображаться при добавлении конфига на устройство.
@@ -113,5 +117,20 @@ docker run itdoginfo/sing-box:v1.8.5 gen-ss
 docker restart sing-box
 ```
 
-# Работа с несколькими аккаунтами в VLESS
-Примеры будут чуть позже
+# VLESS
+Сгенерировать ключи, short_id и первый UUID
+```
+docker run itdoginfo/sing-box:v1.9.3 gen-vless
+```
+PrivateKey, SHORT_ID подставить в объект **tls**.
+PublicKey в переменную docker-compose **PUBLIC_KEY**.
+
+UUID проставить первому юзеру. Для второго юзера снова запустить команду gen-vless. Брать только UUID для следующих юзеров. PrivateKey, PublicKey, SHORT_ID общие для всех.
+
+Пример конфигурации с двумя юзерами для SS2022 и VLESS: https://github.com/itdoginfo/sing-box/blob/main/config/config.json
+
+# Dev mode
+```
+docker compose -f docker-compose-dev.yml build
+docker compose -f docker-compose-dev.yml up
+```

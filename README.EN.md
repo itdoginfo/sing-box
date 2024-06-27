@@ -14,7 +14,7 @@ mkdir sing-box && cd sing-box && wget https://raw.githubusercontent.com/itdoginf
 ### Shadowsocks2022
 Generate password
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-ss
+docker run itdoginfo/sing-box:v1.9.3 gen-ss
 ```
 
 Paste the received password in the environment variable PASS.
@@ -43,7 +43,7 @@ Available environment variables:
 ### VLESS
 Generate UIID, Private and public keys, Short ID
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-vless
+docker run itdoginfo/sing-box:v1.9.3 gen-vless
 ```
 
 Paste the received values in the environment.
@@ -98,7 +98,7 @@ mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itd
 
 Generate mainpass and passwords for users
 ```
-docker run itdoginfo/sing-box:v1.8.5 gen-ss
+docker run itdoginfo/sing-box:v1.9.3 gen-ss
 ```
 
 Specify this passwords in `config/config.json`. You can use any name you want. They will be displayed on the device when you add them
