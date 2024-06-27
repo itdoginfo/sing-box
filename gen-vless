@@ -2,5 +2,5 @@ echo "UIID:"
 sing-box generate uuid
 echo "PRIVATE_KEY & PUBLIC_KEY:"
 sing-box generate reality-keypair
-echo "SHORD_ID:"
+echo "SHORT_ID:"
 sing-box generate rand --hex 8
