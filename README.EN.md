@@ -59,7 +59,7 @@ For example:
       UUID: 71c48bba-6b5d-484d-83ef-b047ab96f1a3
       PRIVATE_KEY: KCaRO6tGf6dLXH21HOJkPaKYQAG64WdR4JVHx41TLnc
       PUBLIC_KEY: 3h_XmVpREusSRsLo8ii3GtIpGZf-2cP5iBrQ7uzVm2Q
-      SHORD_ID: b627ec56b4f8ff40
+      SHORT_ID: b627ec56b4f8ff40
       FAKE_SERVER: www.youtube.com
 ```
 
@@ -73,7 +73,7 @@ Available environment variables:
 - UUID (required)
 - PRIVATE_KEY (required)
 - PUBLIC_KEY (required)
-- SHORD_ID
+- SHORT_ID
 - FAKE_SERVER
 - PORT
 - NAME (config name)

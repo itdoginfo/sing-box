@@ -22,7 +22,7 @@
            },
            "private_key": "{{PRIVATE_KEY}}",
            "short_id": [
-              "{{SHORD_ID}}"
+              "{{SHORT_ID}}"
            ],
            "max_time_difference": "5m"
         }
