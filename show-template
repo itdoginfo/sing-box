@@ -65,7 +65,7 @@ for i in "${array[@]}"; do
             printf "  Public key: $PUBLIC_KEY\n"
             printf "  Short ID: $SID\n\n"
             echo "QRCode:"
-            echo "vless://$CLIENT_UUID@$SERVER:$PORT_VLESS/?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&fp=chrome&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME" | qrencode -t utf8
+            echo "vless://$CLIENT_UUID@$SERVER:$PORT_VLESS?type=tcp&encryption=none&flow=xtls-rprx-vision&sni=$SNI&fp=chrome&security=reality&pbk=$PUBLIC_KEY&sid=$SID#$CLIENT_NAME" | qrencode -t utf8
             echo -e "\n"
         done
     fi
