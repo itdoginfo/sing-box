@@ -6,7 +6,7 @@ on:
       - 'caddy/**'
       - '.github/workflows/build-caddy.yml'
     branches:
-      - 'self-masking'
+      - 'main'
 
 jobs:
   build-caddy:
