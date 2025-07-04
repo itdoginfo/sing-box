@@ -1,15 +1,28 @@
 services:
   sing-box:
     container_name: sing-box
-    image: itdoginfo/sing-box:v1.9.3
+    image: itdoginfo/sing-box:v1.11.14
     ports:
       - "443:443"
     environment:
-      PROTOCOL: shadowsocks
-      PASS: "pass"
-      SERVER: domain\ip
-      #PUBLIC_KEY:
+      SERVER: DOMAIN
+      PUBLIC_KEY: PBK
+      UUID: UUID
+      PRIVATE_KEY: PRK
+      SHORT_ID: SHORTID
     restart: always
     # Enable for custom config (multiple accounts for example)
     # volumes:
     #  - ./config:/etc/sing-box/
+
+  caddy:
+    container_name: caddy
+    image: itdoginfo/caddy-self-masking:2.10.0
+    ports:
+      - "80:80"
+    environment:
+      SERVER: DOMAIN
+      DEBUG: 0
+    restart: always
+    volumes:
+      - ./caddy_data:/data

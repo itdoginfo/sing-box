@@ -1,9 +1,9 @@
 ARG RELEASE
 FROM ghcr.io/sagernet/sing-box:${RELEASE} AS sing-box
 
-FROM alpine:3.18.7
+FROM alpine:3.22.0
 
-RUN apk add --no-cache libqrencode jq coreutils bash && mkdir -p /etc/sing-box/
+RUN apk add --no-cache libqrencode-tools jq coreutils bash && mkdir -p /etc/sing-box/
 
 COPY --from=sing-box /usr/local/bin/sing-box /bin/sing-box
 COPY --from=ghcr.io/tarampampam/mustpl:0.1.1 /bin/mustpl /bin/mustpl
