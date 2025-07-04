@@ -1,0 +1,50 @@
+name: Build caddy image
+
+on:
+  push:
+    paths:
+      - 'caddy/**'
+      - '.github/workflows/build-caddy.yml'
+    branches:
+      - 'self-masking'
+
+jobs:
+  build-caddy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.2.2
+
+      - name: Check caddy image
+        id: image_exists
+        continue-on-error: true
+        uses: cloudposse/github-action-docker-image-exists@0.2.0
+        with:
+          registry: registry.hub.docker.com
+          organization: "itdoginfo"
+          repository: "caddy-self-masking"
+          tag: 2.10.0
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3.4.0
+        if: always() && steps.image_exists.outcome == 'failure'
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Set up QEMU
+        uses:  docker/setup-qemu-action@v3.6.0
+        if: always() && steps.image_exists.outcome == 'failure'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3.11.1
+        if: always() && steps.image_exists.outcome == 'failure'
+
+      - name: Build and push caddy
+        uses: docker/build-push-action@v6.18.0
+        if: always() && steps.image_exists.outcome == 'failure'
+        with:
+          context: ./caddy
+          push: true
+          tags: itdoginfo/caddy-self-masking:2.10.0
+          platforms: linux/386, linux/amd64, linux/arm64, linux/s390x

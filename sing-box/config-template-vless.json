@@ -17,8 +17,8 @@
         "reality": {
           "enabled": true,
           "handshake": {
-            "server": "{{FAKE_SERVER}}",
-            "server_port": 443
+            "server": "caddy",
+            "server_port": 1443
            },
            "private_key": "{{PRIVATE_KEY}}",
            "short_id": [

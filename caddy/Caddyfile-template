@@ -1,0 +1,27 @@
+{
+  {{#DEBUG=1}}
+  debug
+  {{/DEBUG=1}}
+  https_port 1443
+  default_bind 0.0.0.0
+  servers {
+    protocols h1 h2
+    listener_wrappers {
+      proxy_protocol {
+        allow 172.18.0.0/16
+      }
+      tls
+    }
+  }
+  auto_https disable_redirects
+}
+
+https://{{SERVER}} {
+  root * /srv
+  file_server
+}
+
+http://{{SERVER}} {
+  bind 0.0.0.0
+  redir https://{host}{uri} permanent
+}

@@ -1,15 +1,32 @@
 services:
   sing-box:
     container_name: sing-box
-    image: itdoginfo/sing-box:test
     build:
-      context: .
+      context: sing-box
       args:
-        RELEASE: v1.9.3
+        RELEASE: v1.11.14
     ports:
       - "443:443"
     environment:
-      SERVER: test.com
-      PUBLIC_KEY: yieryEYXzNejHPUqY7UnIHLKQOGvxAHfGkjsvTihO3w
+      SERVER: DOMAIN
+      PUBLIC_KEY: PBK
+      UUID: UUID
+      PRIVATE_KEY: PRK
+      SHORT_ID: SHORTID
+    # volumes:
+    #  - ./config:/etc/sing-box/
+
+  caddy:
+    build:
+      context: ./caddy
+    container_name: caddy
+    environment:
+      SERVER: DOMAIN
+      DEBUG: 0
+    restart: always
     volumes:
-     - ./config:/etc/sing-box/
+      # - ./caddy/Caddyfile:/etc/caddy/Caddyfile
+      - ./caddy/caddy_data:/data
+      # - ./caddy/srv:/srv
+    ports:
+      - "80:80"

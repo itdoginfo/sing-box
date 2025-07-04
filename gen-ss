@@ -1,1 +1,0 @@
-sing-box generate rand --base64 16

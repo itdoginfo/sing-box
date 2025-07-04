@@ -1,0 +1,37 @@
+{
+  "inbounds": [
+    {
+      "type": "vless",
+      "listen": "::",
+      "listen_port": 443,
+      "users": [
+        {
+          "name": "user1",
+          "uuid": "UUID",
+          "flow": "xtls-rprx-vision"
+        },
+        {
+          "name": "user2",
+          "uuid": "UUID",
+          "flow": "xtls-rprx-vision"
+        }       
+      ],
+      "tls": {
+        "enabled": true,
+        "server_name": "DOMAIN",
+        "reality": {
+          "enabled": true,
+          "handshake": {
+            "server": "DOMAIN",
+            "server_port": 443
+            },
+            "private_key": "PRK",
+            "short_id": [
+              "SHORTID"
+            ],
+            "max_time_difference": "5m"
+        }
+      }
+    }
+  ]
+}
