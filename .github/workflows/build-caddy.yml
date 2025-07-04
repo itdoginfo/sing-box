@@ -47,4 +47,4 @@ jobs:
           context: ./caddy
           push: true
           tags: itdoginfo/caddy-self-masking:2.10.0
-          platforms: linux/i386, linux/amd64, linux/arm64, linux/s390x
+          platforms: linux/i386, linux/amd64, linux/arm64v8, linux/s390x, linux/arm32v6, linux/arm32v7
