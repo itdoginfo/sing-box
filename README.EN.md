@@ -1,114 +1,67 @@
-[![Docker Hub](https://img.shields.io/badge/%20-DockerHub-blue?logo=docker)](https://hub.docker.com/r/itdoginfo/sing-box)
-![Docker Pulls](https://img.shields.io/docker/pulls/itdoginfo/sing-box)
+[![Docker pulls](https://img.shields.io/docker/pulls/itdoginfo/sing-box?logo=docker&style=flat-square)](https://hub.docker.com/r/itdoginfo/sing-box)
+[![GitHub stars](https://img.shields.io/github/stars/itdoginfo/sing-box?logo=github&style=flat-square)](https://github.com/itdoginfo/sing-box/)
 
-[![Docker Hub](https://img.shields.io/badge/%20-GitHub-black?logo=github)](https://github.com/itdoginfo/sing-box)
-![GitHub Repo stars](https://img.shields.io/github/stars/itdoginfo/sing-box)
+# Self-masked VLESS+Reality server via Sing-box
 
-Docker image for shadowsocks2022 and VLESS proxy server
+**UPD 2025-07-04:** Shadowsocks2022 has been removed. It is now only available in the `show` command (for generating links) if you use your own config.
 
-## Install
+## Requirements
+- VPS with Docker
+- Domain name
+
+## Installation
 ```
 mkdir sing-box && cd sing-box && wget https://raw.githubusercontent.com/itdoginfo/sing-box/main/docker-compose.yml
 ```
 
-### Shadowsocks2022
-Generate password
+Generate UUID, private and public keys, and short ID:
 ```
-docker run itdoginfo/sing-box:v1.9.3 gen-ss
-```
-
-Paste the received password in the environment variable PASS.
-Specify the domain or IP address server.
-Specify protocol shadowsocks.
-
-For example:
-```
-    environment:
-      PROTOCOL: shadowsocks
-      PASS: "ta87nmRO+LYN0P3Wx57ZTw=="
-      SERVER: proxy.itdog.info
+docker run itdoginfo/sing-box:v1.11.4 gen-vless
 ```
 
-Container up
-```
-docker compose up -d
-```
-Available environment variables:
-- SERVER (required)
-- PASS (required)
-- [METHOD](https://sing-box.sagernet.org/configuration/outbound/shadowsocks/#method)
-- PORT
-- NAME
+Insert the generated values and your domain into the `environment` section of `docker-compose.yml`.
 
-### VLESS
-Generate UIID, Private and public keys, Short ID
-```
-docker run itdoginfo/sing-box:v1.9.3 gen-vless
-```
-
-Paste the received values in the environment.
-Specify the domain or IP address server.
-Specify protocol vless.
-Specify site to mask the traffic (HTTP2, TLS 1.3, unblocked).
-
-For example:
-```
-    environment:
-      PROTOCOL: vless
-      SERVER: proxy.itdog.info
-      UUID: 71c48bba-6b5d-484d-83ef-b047ab96f1a3
-      PRIVATE_KEY: KCaRO6tGf6dLXH21HOJkPaKYQAG64WdR4JVHx41TLnc
-      PUBLIC_KEY: 3h_XmVpREusSRsLo8ii3GtIpGZf-2cP5iBrQ7uzVm2Q
-      SHORT_ID: b627ec56b4f8ff40
-      FAKE_SERVER: www.youtube.com
-```
-
-Container up
+Start the container:
 ```
 docker compose up -d
 ```
 
-Available environment variables:
-- SERVER (required)
-- UUID (required)
-- PRIVATE_KEY (required)
-- PUBLIC_KEY (required)
-- SHORT_ID
-- FAKE_SERVER
-- PORT
-- NAME (config name)
-
-## Configure clients
-Get configs for clients devices
+## Client configuration
+Get connection details for your devices:
 ```
 docker exec sing-box show
 ```
 
-## Multi-accounting on Shadowsocks2022
-In docker-compose.yml uncomment
+## Working with multiple accounts
+In `docker-compose.yml`, uncomment:
 ```
     # volumes:
     #  - ./config:/etc/sing-box/
 ```
 
-Download template config
+Download the config template:
 ```
-mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itdoginfo/sing-box/main/config/config.json
-```
-
-Generate mainpass and passwords for users
-```
-docker run itdoginfo/sing-box:v1.9.3 gen-ss
+mkdir config && wget -O config/config.json https://raw.githubusercontent.com/itdoginfo/sing-box/main/config-examples/some-users.json
 ```
 
-Specify this passwords in `config/config.json`. You can use any name you want. They will be displayed on the device when you add them
+If you use your own config, only the `SERVER` and `PUBLIC_KEY` variables are required in `docker-compose.yml`.
 
-With the container without volume up, you have to down\up.
-
-Adding/removing users requires restarting the sing-box
+Generate keys, short_id, and the first UUID:
 ```
-docker restart sing-box
+docker run itdoginfo/sing-box:v1.11.14 gen-vless
 ```
 
-## Multi-accounting on VLESS
-Example coming soon
+Insert `PrivateKey` and `SHORT_ID` into the **tls** object.  
+Insert `PublicKey` into the **PUBLIC_KEY** variable in `docker-compose.yml`.
+
+Set the UUID for the first user. For the second user, run `gen-vless` again. For additional users, only use the UUID. `PrivateKey`, `PublicKey`, and `SHORT_ID` are common for all users.
+
+## Dev mode
+```
+docker compose -f docker-compose-dev.yml build
+docker compose -f docker-compose-dev.yml up
+```
+
+## Related Projects
+- [Akiyamov/xray-vps-setup](https://github.com/Akiyamov/xray-vps-setup) — Script and Ansible playbook for installing Xray with steal-self
+- [vernette/steal-oneself-examples](https://github.com/vernette/steal-oneself-examples) — Example Xray and Sing-box configurations for steal-self
